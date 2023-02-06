@@ -9,6 +9,12 @@ const apiHelpers = require('../../api/helpers');
 
 const Posts = module.exports;
 
+Posts.markAsAnswer = async (req, res) => {
+    const data = await mock(req);
+    await posts['markAsAnswer'](data.pid, req.uid);
+    helpers.formatApiResponse(200, res);
+}
+
 Posts.get = async (req, res) => {
     helpers.formatApiResponse(200, res, await api.posts.get(req, { pid: req.params.pid }));
 };

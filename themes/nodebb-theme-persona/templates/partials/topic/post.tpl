@@ -89,6 +89,10 @@
                 <i class="fa fa-chevron-up"></i>
             </a>
 
+            <a component="post/mark-as-answer" href="/api/v3/posts/1/mark-as-answer" class="<!-- IF posts.upvoted -->upvoted<!-- ENDIF posts.upvoted -->">
+                <i class="fa fa-chevron-up"></i>
+            </a>
+
             <span component="post/vote-count" data-votes="{posts.votes}">{posts.votes}</span>
 
             <!-- IF !downvote:disabled -->
