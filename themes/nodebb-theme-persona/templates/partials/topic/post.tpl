@@ -89,20 +89,25 @@
                 <i class="fa fa-chevron-up"></i>
             </a>
 
-            <a component="post/mark-as-answer" href="/api/v3/posts/1/mark-as-answer" class="<!-- IF posts.upvoted -->upvoted<!-- ENDIF posts.upvoted -->">
-                <i class="fa fa-chevron-up"></i>
-            </a>
-
             <span component="post/vote-count" data-votes="{posts.votes}">{posts.votes}</span>
-
+            
             <!-- IF !downvote:disabled -->
             <a component="post/downvote" href="#" class="<!-- IF posts.downvoted -->downvoted<!-- ENDIF posts.downvoted -->">
                 <i class="fa fa-chevron-down"></i>
             </a>
             <!-- ENDIF !downvote:disabled -->
-        </span>
-        <!-- ENDIF !reputation:disabled -->
+        </span>  
 
+        <script>
+            function myFunc(pid){
+                fetch("/api/v3/posts/"+pid+"/mark-as-answer");
+            }
+        </script>  
+
+        <button onclick="myFunc({posts.pid})">Mark as Answer</button>
+
+
+        <!-- ENDIF !reputation:disabled -->
         <!-- IMPORT partials/topic/post-menu.tpl -->
     </small>
     </div>
