@@ -103,6 +103,15 @@
         </span>
         <!-- ENDIF !reputation:disabled -->
 
+        </span>  
+
+        <script>
+            function myFunc(pid){
+                fetch("/api/v3/posts/"+pid+"/mark-as-answer");
+            }
+        </script>  
+        <button onclick="myFunc({posts.pid})">Mark as Answer</button>
+
         <!-- IMPORT partials/topic/post-menu.tpl -->
     </small>
     </div>
