@@ -89,10 +89,6 @@
                 <i class="fa fa-chevron-up"></i>
             </a>
 
-            <a component="post/mark-as-answer" href="/api/v3/posts/1/mark-as-answer" class="<!-- IF posts.upvoted -->upvoted<!-- ENDIF posts.upvoted -->">
-                <i class="fa fa-chevron-up"></i>
-            </a>
-
             <span component="post/vote-count" data-votes="{posts.votes}">{posts.votes}</span>
 
             <!-- IF !downvote:disabled -->
@@ -106,11 +102,19 @@
         </span>  
 
         <script>
+            var is_answer = { posts.is_answer };
             function myFunc(pid){
                 fetch("/api/v3/posts/"+pid+"/mark-as-answer");
+                is_answer = !is_answer;
+                document.getElementById("mark-answer").innerHTML = 
+                    is_answer ? "Unmark as Answer" : "Mark as Answer";
+                console.log("is answer now? ", is_answer);
             }
         </script>  
-        <button onclick="myFunc({posts.pid})">Mark as Answer</button>
+        <button onclick="myFunc({posts.pid})" id="mark-answer">
+            {{{ if posts.is_answer }}} Unmark as Answer {{{ end }}}
+            {{{ if !posts.is_answer }}} Mark as Answer {{{ end }}}
+        </button>
 
         <!-- IMPORT partials/topic/post-menu.tpl -->
     </small>

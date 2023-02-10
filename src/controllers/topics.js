@@ -79,8 +79,7 @@ topicsController.get = async function getTopic(req, res, next) {
     const { start, stop } = calculateStartStop(currentPage, postIndex, settings);
 
     await topics.getTopicWithPosts(topicData, set, req.uid, start, stop, reverse);
-
-    console.log(topicData)
+    topicData.posts.forEach(post => (post.is_answer = (post.is_answer === 'true')));
 
     topics.modifyPostsByPrivilege(topicData, userPrivileges);
     topicData.tagWhitelist = categories.filterTagWhitelist(topicData.tagWhitelist, userPrivileges.isAdminOrMod);
