@@ -2,7 +2,7 @@
 const db = require('../database');
 const posts = require('../posts');
 module.exports = function (Posts) {
-    Posts.markAsAnswer = async function (pid, uid) {
+    Posts.markAsAnswer = async function (pid) {
         try{
             const is_answer = await posts.getPostField(pid, ['is_answer']);
             if (is_answer !== 'true'){

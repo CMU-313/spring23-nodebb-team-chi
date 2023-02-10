@@ -11,7 +11,7 @@ const Posts = module.exports;
 
 Posts.markAsAnswer = async (req, res) => {
     const data = await mock(req);
-    await posts['markAsAnswer'](data.pid, req.uid);
+    await posts['markAsAnswer'](data.pid);
     helpers.formatApiResponse(200, res);
 }
 

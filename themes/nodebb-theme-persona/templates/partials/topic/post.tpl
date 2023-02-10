@@ -108,7 +108,6 @@
                 is_answer = !is_answer;
                 document.getElementById("mark-answer").innerHTML = 
                     is_answer ? "Unmark as Answer" : "Mark as Answer";
-                console.log("is answer now? ", is_answer);
             }
         </script>  
         <button onclick="myFunc({posts.pid})" id="mark-answer">
