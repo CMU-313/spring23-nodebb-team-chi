@@ -77,10 +77,12 @@ topicsController.get = async function getTopic(req, res, next) {
         currentPage = calculatePageFromIndex(postIndex, settings);
     }
     const { start, stop } = calculateStartStop(currentPage, postIndex, settings);
-
-    topicData.posts = getAnswersOnly(topicData.posts)
+    
     await topics.getTopicWithPosts(topicData, set, req.uid, start, stop, reverse);
     topicData.posts.forEach(post => (post.is_answer = (post.is_answer === 'true')));
+    if (req.params.only_answer === 'true') {
+        topicData.posts.filter(post => post.is_answer);
+    };
 
     topics.modifyPostsByPrivilege(topicData, userPrivileges);
     topicData.tagWhitelist = categories.filterTagWhitelist(topicData.tagWhitelist, userPrivileges.isAdminOrMod);
@@ -125,9 +127,6 @@ topicsController.get = async function getTopic(req, res, next) {
     res.render('topic', topicData);
 };
 
-function getAnswersOnly(postsInTopic) {
-    return postsInTopic.filter(post => post.is_answer === 'true');
-};
 
 function generateQueryString(query) {
     const qString = qs.stringify(query);

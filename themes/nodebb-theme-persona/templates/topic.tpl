@@ -100,10 +100,11 @@
 
     <script>
         function myFunc(pid){
-            fetch("/api/v3/topics/"+tid+"/answers-only");
+            fetch("/api/v3/posts/"+pid+"/mark-as-answer");
         }
     </script>  
-    <button onclick="myFunc({topics.tid})" id="answers-only" class="btn btn-primary"></button>
+    <button onclick="myFunc({topics.tid})" id="answers-only" class="btn btn-primary">Answers-only</button>
+    <a href="?only_answer=true">Show only answer</a>
 </div>
 
 <div data-widget-area="footer">
