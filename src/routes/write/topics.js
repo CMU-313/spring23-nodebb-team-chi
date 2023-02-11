@@ -18,7 +18,8 @@ module.exports = function () {
     setupApiRoute(router, 'post', '/:tid', [middleware.checkRequired.bind(null, ['content']), middleware.assert.topic], controllers.write.topics.reply);
     setupApiRoute(router, 'delete', '/:tid', [...middlewares], controllers.write.topics.purge);
 
-    setupApiRoute(router, 'put', '/:tid/state', [...middlewares], controllers.write.topics.restore);
+    setupApiRoute(router, 'get', '/:tid/answers-only', [], controllers.write.topics.getAnswersOnly);
+    setupApiRoute(router, 'put', '/:tid/state', [...middlewares], controllers.write.topics.restore);as
     setupApiRoute(router, 'delete', '/:tid/state', [...middlewares], controllers.write.topics.delete);
 
     setupApiRoute(router, 'put', '/:tid/pin', [...middlewares, middleware.assert.topic], controllers.write.topics.pin);

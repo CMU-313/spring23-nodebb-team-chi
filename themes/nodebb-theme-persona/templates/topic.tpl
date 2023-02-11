@@ -97,6 +97,13 @@
         {{widgets.sidebar.html}}
         {{{end}}}
     </div>
+
+    <script>
+        function myFunc(pid){
+            fetch("/api/v3/topics/"+tid+"/answers-only");
+        }
+    </script>  
+    <button onclick="myFunc({topics.tid})" id="answers-only" class="btn btn-primary"></button>
 </div>
 
 <div data-widget-area="footer">

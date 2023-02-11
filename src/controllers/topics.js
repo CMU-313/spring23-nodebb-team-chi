@@ -78,6 +78,7 @@ topicsController.get = async function getTopic(req, res, next) {
     }
     const { start, stop } = calculateStartStop(currentPage, postIndex, settings);
 
+    topicData.posts = getAnswersOnly(topicData.posts)
     await topics.getTopicWithPosts(topicData, set, req.uid, start, stop, reverse);
     topicData.posts.forEach(post => (post.is_answer = (post.is_answer === 'true')));
 
@@ -122,6 +123,10 @@ topicsController.get = async function getTopic(req, res, next) {
     });
 
     res.render('topic', topicData);
+};
+
+function getAnswersOnly(postsInTopic) {
+    return postsInTopic.filter(post => post.is_answer === 'true');
 };
 
 function generateQueryString(query) {
