@@ -110,7 +110,7 @@
                     is_answer ? "Unmark as Answer" : "Mark as Answer";
             }
         </script>  
-        <button onclick="myFunc({posts.pid})" id="mark-answer">
+        <button onclick="myFunc({posts.pid})" id="mark-answer" class="btn btn-primary">
             {{{ if posts.is_answer }}} Unmark as Answer {{{ end }}}
             {{{ if !posts.is_answer }}} Mark as Answer {{{ end }}}
         </button>
