@@ -80,6 +80,15 @@ topicsController.get = async function getTopic(req, res, next) {
 
     await topics.getTopicWithPosts(topicData, set, req.uid, start, stop, reverse);
     topicData.posts.forEach((post) => { post.is_answer = (post.is_answer === 'true'); });
+    if (req.query.only_answer === 'true') {
+        console.log("BEFORE3:")
+        console.log(topicData.posts)
+        topicData.posts = topicData.posts.filter(post => post.is_answer === true);
+        // topicData.posts.forEach((post) => { post.is_answer = (post.is_answer === 'true'); });
+        // topicData.posts = topicData.posts.filter(post => post.pid === 2);
+        console.log("AFTER3:")
+        console.log(topicData.posts)
+    }
 
     topics.modifyPostsByPrivilege(topicData, userPrivileges);
     topicData.tagWhitelist = categories.filterTagWhitelist(topicData.tagWhitelist, userPrivileges.isAdminOrMod);

@@ -44,6 +44,9 @@
 
                 <!-- IMPORT partials/post_bar.tpl -->
             </div>
+            <a href="?only_answer=true">
+                <b>Show Answers Only</b>
+            </a>
         </div>
         <!-- IF merger -->
         <div component="topic/merged/message" class="alert alert-warning clearfix">
