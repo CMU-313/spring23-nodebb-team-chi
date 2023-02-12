@@ -102,15 +102,18 @@
         </span>  
 
         <script>
-            var is_answer = { posts.is_answer };
-            function myFunc(pid){
+            function toggleAnswer(pid) {
                 fetch("/api/v3/posts/"+pid+"/mark-as-answer");
-                is_answer = !is_answer;
-                document.getElementById("mark-answer").innerHTML = 
-                    is_answer ? "Unmark as Answer" : "Mark as Answer";
+                id = "toggle-answer-"+pid;
+                if(document.getElementById(id).innerHTML.includes('Unmark')) {
+                    document.getElementById(id).innerHTML = 'Mark as Answer'
+                }
+                else {
+                    document.getElementById(id).innerHTML = 'Unmark as Answer'
+                }
             }
         </script>  
-        <button onclick="myFunc({posts.pid})" id="mark-answer" class="btn btn-primary">
+        <button onclick="toggleAnswer({posts.pid})" id="toggle-answer-{posts.pid}" class="btn btn-primary">
             {{{ if posts.is_answer }}} Unmark as Answer {{{ end }}}
             {{{ if !posts.is_answer }}} Mark as Answer {{{ end }}}
         </button>
