@@ -43,10 +43,24 @@
                 {{{ end }}}
 
                 <!-- IMPORT partials/post_bar.tpl -->
-            </div>
-            <a href="?only_answer=true">
+            </div>  
+            <script>
+                function toggleShowAnswer(tid) {
+                    var elems = document.getElementsByClassName('post-tag');
+                    let i = 0;
+                    while(i < elems.length) {
+                        if(elems[i].getAttribute('data-is-answer') === 'true') {
+                            i++;
+                        }
+                        else {
+                            elems[i].remove();
+                        }
+                    }
+                }
+            </script>  
+            <button onclick="toggleShowAnswer({tid})" id="toggle-show-answer-{tid}" class="btn btn-primary">
                 <b>Show Answers Only</b>
-            </a>
+            </button>
         </div>
         <!-- IF merger -->
         <div component="topic/merged/message" class="alert alert-warning clearfix">
@@ -66,7 +80,7 @@
 
         <ul component="topic" class="posts timeline" data-tid="{tid}" data-cid="{cid}">
             {{{each posts}}}
-                <li component="post" class="{{{ if posts.deleted }}}deleted{{{ end }}} {{{ if posts.selfPost }}}self-post{{{ end }}} {{{ if posts.topicOwnerPost }}}topic-owner-post{{{ end }}}" <!-- IMPORT partials/data/topic.tpl -->>
+                <li component="post" class="post-tag {{{ if posts.deleted }}}deleted{{{ end }}} {{{ if posts.selfPost }}}self-post{{{ end }}} {{{ if posts.topicOwnerPost }}}topic-owner-post{{{ end }}}" <!-- IMPORT partials/data/topic.tpl --> data-is-answer="{posts.is_answer_tag}">
                     <a component="post/anchor" data-index="{posts.index}" id="{posts.index}"></a>
 
                     <meta itemprop="datePublished" content="{posts.timestampISO}">
