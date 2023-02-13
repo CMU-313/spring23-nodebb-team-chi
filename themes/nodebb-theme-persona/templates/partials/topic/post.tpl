@@ -49,7 +49,7 @@
 
 <br />
 
-<div class="content" component="post/content" itemprop="text">
+<div class="content" component="post/content" itemprop="text" id=content-{posts.pid}>
     {posts.content}
 </div>
 
@@ -106,9 +106,11 @@
                 fetch("/api/v3/posts/"+pid+"/mark-as-answer");
                 id = "toggle-answer-"+pid;
                 if(document.getElementById(id).innerHTML.includes('Unmark')) {
+                    document.getElementById("content-"+pid).style.backgroundColor = "#fff"
                     document.getElementById(id).innerHTML = 'Mark as Answer'
                 }
                 else {
+                    document.getElementById("content-"+pid).style.backgroundColor = "rgba(152,251,152,0.5)"
                     document.getElementById(id).innerHTML = 'Unmark as Answer'
                 }
             }
