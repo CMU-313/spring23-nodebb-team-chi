@@ -79,8 +79,8 @@ topicsController.get = async function getTopic(req, res, next) {
     const { start, stop } = calculateStartStop(currentPage, postIndex, settings);
 
     await topics.getTopicWithPosts(topicData, set, req.uid, start, stop, reverse);
-    topicData.posts.forEach((post) => { 
-        post.is_answer = (post.is_answer === 'true'); 
+    topicData.posts.forEach((post) => {
+        post.is_answer = (post.is_answer === 'true');
         post.is_answer_tag = post.is_answer ? 'true' : 'false';
     });
 
