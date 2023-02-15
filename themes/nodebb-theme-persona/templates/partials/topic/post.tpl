@@ -49,7 +49,7 @@
 
 <br />
 
-<div class="content" component="post/content" itemprop="text" id=content-{posts.pid}>
+<div class="content" component="post/content" itemprop="text" id=content-{posts.pid} {{{ if posts.is_answer }}}style="background-color: rgba(152,251,152,0.5);"{{{ end }}}>
     {posts.content}
 </div>
 
@@ -104,14 +104,24 @@
         <script>
             function toggleAnswer(pid) {
                 fetch("/api/v3/posts/"+pid+"/mark-as-answer");
-                id = "toggle-answer-"+pid;
+                var id = "toggle-answer-"+pid;
+                var postElems = document.getElementsByClassName('post-tag');
+                var elem;
+                for(let i = 0; i < postElems.length; i++) {
+                    if(postElems[i].getAttribute('data-pid') === pid.toString()) {
+                        elem = postElems[i];
+                        break;
+                    }
+                }
                 if(document.getElementById(id).innerHTML.includes('Unmark')) {
-                    document.getElementById("content-"+pid).style.backgroundColor = "#fff"
-                    document.getElementById(id).innerHTML = 'Mark as Answer'
+                    document.getElementById("content-"+pid).style.backgroundColor = "#fff";
+                    document.getElementById(id).innerHTML = 'Mark as Answer';
+                    elem.setAttribute('data-is-answer', 'false');
                 }
                 else {
-                    document.getElementById("content-"+pid).style.backgroundColor = "rgba(152,251,152,0.5)"
-                    document.getElementById(id).innerHTML = 'Unmark as Answer'
+                    document.getElementById("content-"+pid).style.backgroundColor = "rgba(152,251,152,0.5)";
+                    document.getElementById(id).innerHTML = 'Unmark as Answer';
+                    elem.setAttribute('data-is-answer', 'true');
                 }
             }
         </script>  
