@@ -41,6 +41,10 @@ Topics.reply = async (req, res) => {
     }
 };
 
+Topics.markAsResolved = async (req, res) => {
+    await topics.markAsResolved(req.params.tid);
+    helpers.formatApiResponse(200, res);
+};
 async function lockPosting(req, error) {
     const id = req.uid > 0 ? req.uid : req.sessionID;
     const value = `posting${id}`;
