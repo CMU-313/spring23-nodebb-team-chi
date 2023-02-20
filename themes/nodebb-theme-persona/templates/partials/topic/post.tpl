@@ -125,7 +125,7 @@
                 }
             }
         </script>  
-        <button onclick="toggleAnswer({posts.pid})" id="toggle-answer-{posts.pid}" class="btn btn-primary">
+        <button onclick="toggleAnswer({posts.pid})" id="toggle-answer-{posts.pid}" class="btn btn-primary btn-sm">
             {{{ if posts.is_answer }}} Unmark as Answer {{{ end }}}
             {{{ if !posts.is_answer }}} Mark as Answer {{{ end }}}
         </button>

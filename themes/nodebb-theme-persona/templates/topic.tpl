@@ -17,6 +17,9 @@
                     </span>
                     <span component="topic/title">{title}</span>
                 </span>
+                <small id="check-{tid}" style="display: inline; font-size: 15px;">
+                    Resolved ✅
+                </small>
             </h1>
 
             <div class="topic-info clearfix">
@@ -43,24 +46,8 @@
                 {{{ end }}}
 
                 <!-- IMPORT partials/post_bar.tpl -->
+
             </div>  
-            <script>
-                function toggleShowAnswer(tid) {
-                    var elems = document.getElementsByClassName('post-tag');
-                    let i = 0;
-                    while(i < elems.length) {
-                        if(elems[i].getAttribute('data-is-answer') === 'true') {
-                            i++;
-                        }
-                        else {
-                            elems[i].remove();
-                        }
-                    }
-                }
-            </script>  
-            <button onclick="toggleShowAnswer({tid})" id="toggle-show-answer-{tid}" class="btn btn-primary">
-                <b>Show Answers Only</b>
-            </button>
         </div>
         <!-- IF merger -->
         <div component="topic/merged/message" class="alert alert-warning clearfix">
