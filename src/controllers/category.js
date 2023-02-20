@@ -94,6 +94,14 @@ categoryController.get = async function (req, res, next) {
         return next();
     }
 
+    categoryData.topics.forEach((topic) => {
+        topic.resolved = (topic.resolved === 'true');
+        topic.resolved_tag = topic.resolved ? 'true' : 'false';
+        console.log("THIS IS A TEST!!!")
+        console.log(topic.resolved === true)
+    });
+    console.log(categoryData.topics)
+
     categories.modifyTopicsByPrivilege(categoryData.topics, userPrivileges);
     categoryData.tagWhitelist = categories.filterTagWhitelist(categoryData.tagWhitelist, userPrivileges.isAdminOrMod);
 
