@@ -17,7 +17,7 @@
                     </span>
                     <span component="topic/title">{title}</span>
                 </span>
-                <small id="check-{tid}" style="display: inline; font-size: 15px;">
+                <small id="check-{tid}" style="display: {{{ if resolved }}}inline{{{ else }}}none{{{ end }}}; font-size: 15px;">
                     Resolved ✅
                 </small>
             </h1>
