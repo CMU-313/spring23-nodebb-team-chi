@@ -54,6 +54,8 @@ describe('Topic\'s', () => {
             categoryId: categoryObj.cid,
             title: 'Test Topic Title',
             content: 'The content of test topic',
+            // tid: 1,
+            // resolved: 'false',
         };
     });
 
@@ -2828,6 +2830,21 @@ describe('Topic\'s', () => {
         it('should remove from topics:scheduled on purge', async () => {
             const score = await db.sortedSetScore('topics:scheduled', topicData.tid);
             assert(!score);
+        });
+
+        it('should set a topic to resolved', async () => {
+            topicData = (await topics.post(topic)).topicData;
+            await topics.markAsResolved(topicData.tid)
+            const resolved = await topics.getTopicField(topicData.tid, ['resolved']);
+            assert.equal(resolved, 'true')
+        });
+
+        it('should set a resolved topic to unresolved', async () => {
+            topicData = (await topics.post(topic)).topicData;
+            await topics.markAsResolved(topicData.tid)
+            await topics.markAsResolved(topicData.tid)
+            const resolved = await topics.getTopicField(topicData.tid, ['resolved']);
+            assert.equal(resolved, 'false')
         });
     });
 });
