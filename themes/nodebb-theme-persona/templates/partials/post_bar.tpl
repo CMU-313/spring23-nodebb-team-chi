@@ -32,15 +32,15 @@
             }
         }
         function toggleResolved(tid) {
-            fetch("/api/v3/topic/"+tid+"/toggle-resolved");
+            fetch("/api/v3/topics/"+tid+"/toggle-resolved");
             var id = "toggle-resolved-"+tid;
             if(document.getElementById(id).innerHTML.includes('Unmark')) {
                 document.getElementById("check-"+tid).style.display = "none";
-                document.getElementById(id).innerHTML = 'Mark as Resolved';
+                document.getElementById(id).innerHTML = '<b>Mark as Resolved</b>';
             }
             else {
                 document.getElementById("check-"+tid).style.display = "inline";
-                document.getElementById(id).innerHTML = 'Unmark as Unresolved';
+                document.getElementById(id).innerHTML = '<b>Unmark as Resolved</b>';
             }
         }
     </script>
@@ -50,7 +50,7 @@
     </button>
 
     <button onclick="toggleResolved({tid})" id="toggle-resolved-{tid}" class="btn btn-primary btn-sm">
-        <b>Mark as resolved</b>
+        {{{if resolved}}}<b>Unmark as Resolved</b>{{{else}}}<b>Mark as Resolved</b>{{{end}}}
     </button>
 
 </div>
