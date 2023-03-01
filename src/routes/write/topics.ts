@@ -1,6 +1,5 @@
-'use strict';
-
 import express = require('express');
+import multipart = require('connect-multiparty');
 import middleware = require('../../middleware');
 import controllers = require('../../controllers');
 import routeHelpers = require('../helpers');
@@ -10,8 +9,7 @@ const { setupApiRoute } = routeHelpers;
 
 module.exports = function () {
     const middlewares = [middleware.ensureLoggedIn];
-
-    const multipart = require('connect-multiparty');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     const multipartMiddleware = multipart();
 
     setupApiRoute(router, 'post', '/', [middleware.checkRequired.bind(null, ['cid', 'title', 'content'])], controllers.write.topics.create);
