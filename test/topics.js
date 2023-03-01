@@ -2862,20 +2862,19 @@ describe('Topic\'s', () => {
 
         it('should set a topic to resolved', async () => {
             topicData = (await topics.post(topic)).topicData;
-            await topics.markAsResolved(topicData.tid)
+            await topics.markAsResolved(topicData.tid);
             const resolved = await topics.getTopicField(topicData.tid, ['resolved']);
-            assert.equal(resolved, 'true')
+            assert.equal(resolved, 'true');
         });
 
         it('should set a resolved topic to unresolved', async () => {
             topicData = (await topics.post(topic)).topicData;
-            await topics.markAsResolved(topicData.tid)
-            await topics.markAsResolved(topicData.tid)
+            await topics.markAsResolved(topicData.tid);
+            await topics.markAsResolved(topicData.tid);
             const resolved = await topics.getTopicField(topicData.tid, ['resolved']);
-            assert.equal(resolved, 'false')
+            assert.equal(resolved, 'false');
         });
     });
-
 });
 
 describe('Topics\'', async () => {
