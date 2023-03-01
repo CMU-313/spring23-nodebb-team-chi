@@ -22,7 +22,7 @@ We add a button at the top of each topic to mark a topic as resolved. There are 
 
 To user test this functionality, click on the button and see the visual clues.
 
-### Feature 3: Filter Resolved Topics
+### Feature 4: Filter Resolved Topics
 
 Inside each category, users can filter resolved topics by clicking the button "Show Resolved Only" at the top right row of the category page. Users can get back all topics by refreshing the page. Besides, we also put a visual clue for resolved topic: a green check next to the title.
 
