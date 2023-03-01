@@ -15,16 +15,16 @@ module.exports = function (Topics) {
         return __awaiter(this, void 0, void 0, function* () {
             // The next line calls a function in a module that has not been updated to TS yet
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-            const is_resolved = yield topics.getTopicField(tid, ['is_resolved']);
-            if (is_resolved !== 'true') {
+            const resolved = yield topics.getTopicField(tid, ['resolved']);
+            if (resolved !== 'true') {
                 // The next line calls a function in a module that has not been updated to TS yet
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-                yield topics.setTopicField(tid, 'is_resolved', 'true');
+                yield topics.setTopicField(tid, 'resolved', 'true');
             }
             else {
                 // The next line calls a function in a module that has not been updated to TS yet
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-                yield topics.setTopicField(tid, 'is_resolved', 'false');
+                yield topics.setTopicField(tid, 'resolved', 'false');
             }
         });
     };
