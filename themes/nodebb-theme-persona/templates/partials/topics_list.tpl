@@ -1,6 +1,6 @@
 <ul component="category" class="topic-list" itemscope itemtype="http://www.schema.org/ItemList" data-nextstart="{nextStart}" data-set="{set}">
     {{{each topics}}}
-    <li component="category/topic" class="row clearfix category-item {function.generateTopicClass}" <!-- IMPORT partials/data/category.tpl -->>
+    <li component="category/topic" class="topic-tag row clearfix category-item {function.generateTopicClass}" <!-- IMPORT partials/data/category.tpl --> data-is-resolved="{topics.resolved_tag}">
         <link itemprop="url" content="{config.relative_path}/topic/{../slug}" />
         <meta itemprop="name" content="{function.stripTags, ../title}" />
         <meta itemprop="itemListOrder" content="descending" />
@@ -40,10 +40,14 @@
 
 
                 <!-- IF !topics.noAnchor -->
-                <a href="{config.relative_path}/topic/{topics.slug}<!-- IF topics.bookmark -->/{topics.bookmark}<!-- ENDIF topics.bookmark -->">{topics.title}</a><br />
+                <a href="{config.relative_path}/topic/{topics.slug}<!-- IF topics.bookmark -->/{topics.bookmark}<!-- ENDIF topics.bookmark -->">{topics.title}</a>
                 <!-- ELSE -->
-                <span>{topics.title}</span><br />
+                <span>{topics.title}</span>
                 <!-- ENDIF !topics.noAnchor -->
+                <small id="list-check-{tid}" style="display: {{{ if topics.resolved }}}inline{{{ else }}}none{{{ end }}}; font-size: 15px;">
+                    ✅
+                </small>
+                <br />
 
                 <!-- IF !template.category -->
                 <small>
