@@ -21,6 +21,8 @@ export type PostObject = {
     ip?: number;
     handle?: number;
     cid?: number;
+    // The next line calls a function in a module that has not been updated to TS yet
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
     uploads?: any;
   };
 
