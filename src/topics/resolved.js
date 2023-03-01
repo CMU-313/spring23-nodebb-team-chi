@@ -1,24 +1,31 @@
-'use strict';
-
-const topics = require('.');
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const topics = require("../topics");
 module.exports = function (Topics) {
-    Topics.markAsResolved = async function (tid) {
-        try {
-            const resolved = await topics.getTopicField(tid, ['resolved']);
-            console.log(resolved, 'before:topicdata');
-            if (resolved !== 'true') {
-                await topics.setTopicField(tid, 'resolved', 'true');
-                console.log('*************************************************Resolved');
-            } else {
-                await topics.setTopicField(tid, 'resolved', 'false');
-                console.log('*************************************************Unresolved');
+    Topics.markAsResolved = function (tid) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+            const is_resolved = yield topics.getTopicField(tid, ['is_resolved']);
+            if (is_resolved !== 'true') {
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+                yield topics.setTopicField(tid, 'is_resolved', 'true');
             }
-            const topic = await topics.getTopicFields(tid, ['resolved']);
-            console.log(topic, 'after:topicdata');
-            return topic;
-        } catch (err) {
-            console.log(err);
-        }
+            else {
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+                yield topics.setTopicField(tid, 'is_resolved', 'false');
+            }
+        });
     };
 };
