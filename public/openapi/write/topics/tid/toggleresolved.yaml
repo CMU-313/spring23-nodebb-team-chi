@@ -1,0 +1,26 @@
+get:
+  tags:
+    - topic
+  summary: toggle a topic as resolved or unresolved
+  description: This operation marks a topic as resolved.
+  parameters:
+    - in: path
+      name: tid
+      schema:
+        type: string
+      required: true
+      description: a valid topic id
+      example: 2
+  responses:
+    '200':
+      description: Topic successfully marked as resolved
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: ../../../components/schemas/Status.yaml#/Status
+              response:
+                type: object
+                properties: {}

@@ -83,6 +83,7 @@ topicsController.get = async function getTopic(req, res, next) {
         post.is_answer = (post.is_answer === 'true');
         post.is_answer_tag = post.is_answer ? 'true' : 'false';
     });
+    topicData.resolved = (topicData.resolved === 'true');
 
     topics.modifyPostsByPrivilege(topicData, userPrivileges);
     topicData.tagWhitelist = categories.filterTagWhitelist(topicData.tagWhitelist, userPrivileges.isAdminOrMod);

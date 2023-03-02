@@ -25,6 +25,26 @@
                 <!-- IMPORT partials/category/watch.tpl -->
                 <!-- IMPORT partials/category/sort.tpl -->
                 <!-- IMPORT partials/category/tools.tpl -->
+                <div class="btn-group bottom-sheet" component="thread/sort">
+                    <script>
+                        function toggleShowResolved() {
+                            var elems = document.getElementsByClassName('topic-tag');
+                            let i = 0;
+                            while(i < elems.length) {
+                                if(elems[i].getAttribute('data-is-resolved') === 'true') {
+                                    i++;
+                                }
+                                else {
+                                    elems[i].remove();
+                                }
+                            }
+                        }
+                    </script>
+                    <button onclick="toggleShowResolved()" class="btn btn-primary" type="button">
+                        <span class="visible-sm-inline visible-md-inline visible-lg-inline">Show Resolved Only</span>
+                        <span class="visible-xs-inline"><i class="fa fa-fw fa-sort"></i></span>
+                    </button>
+                </div>
             </span>
         </div>
 

@@ -54,6 +54,8 @@ describe('Topic\'s', () => {
             categoryId: categoryObj.cid,
             title: 'Test Topic Title',
             content: 'The content of test topic',
+            // tid: 1,
+            // resolved: 'false',
         };
     });
 
@@ -2828,6 +2830,49 @@ describe('Topic\'s', () => {
         it('should remove from topics:scheduled on purge', async () => {
             const score = await db.sortedSetScore('topics:scheduled', topicData.tid);
             assert(!score);
+        });
+    });
+
+    describe('resolved topics', () => {
+        let categoryObj;
+        let topicData;
+        let topic;
+        let adminApiOpts;
+
+        before(async () => {
+            adminApiOpts = {
+                json: true,
+                jar: adminJar,
+                headers: {
+                    'x-csrf-token': csrf_token,
+                },
+            };
+            categoryObj = await categories.create({
+                name: 'Another Test Category',
+                description: 'Another test category created by testing script',
+            });
+            topic = {
+                uid: adminUid,
+                cid: categoryObj.cid,
+                title: 'Resolved Topics Test Topic Title',
+                content: 'The content of test topic to be resolved',
+                timestamp: new Date(Date.now() + 86400000).getTime(),
+            };
+        });
+
+        it('should set a topic to resolved', async () => {
+            topicData = (await topics.post(topic)).topicData;
+            await topics.markAsResolved(topicData.tid);
+            const resolved = await topics.getTopicField(topicData.tid, ['resolved']);
+            assert.equal(resolved, 'true');
+        });
+
+        it('should set a resolved topic to unresolved', async () => {
+            topicData = (await topics.post(topic)).topicData;
+            await topics.markAsResolved(topicData.tid);
+            await topics.markAsResolved(topicData.tid);
+            const resolved = await topics.getTopicField(topicData.tid, ['resolved']);
+            assert.equal(resolved, 'false');
         });
     });
 });

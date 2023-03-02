@@ -302,6 +302,20 @@ describe('Post\'s', () => {
         });
     });
 
+    describe('marking answers', () => {
+        it('should mark a post as answer', async () => {
+            await posts.markAsAnswer(postData.pid);
+            const is_answer = await posts.getPostField(postData.pid, ['is_answer']);
+            assert.equal(is_answer, 'true');
+        });
+
+        it('should unmark a post as answer', async () => {
+            await posts.markAsAnswer(postData.pid);
+            const is_answer = await posts.getPostField(postData.pid, ['is_answer']);
+            assert.equal(is_answer, 'false');
+        });
+    });
+
     describe('post tools', () => {
         it('should error if data is invalid', (done) => {
             socketPosts.loadPostTools({ uid: globalModUid }, null, (err) => {

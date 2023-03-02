@@ -994,8 +994,26 @@ describe('Controllers', () => {
         });
     });
 
+    it('should get answered posts', (done) => {
+        request(`${nconf.get('url')}/api/v3/posts/${pid}/mark-as-answer`, (err, res, body) => {
+            assert.ifError(err);
+            assert.equal(res.statusCode, 200);
+            assert(body);
+            done();
+        });
+    });
+
     it('should get topic data', (done) => {
         request(`${nconf.get('url')}/api/v3/topics/${tid}`, (err, res, body) => {
+            assert.ifError(err);
+            assert.equal(res.statusCode, 200);
+            assert(body);
+            done();
+        });
+    });
+
+    it('should get topic data', (done) => {
+        request(`${nconf.get('url')}/api/v3/topics/${tid}/toggle-resolved`, (err, res, body) => {
             assert.ifError(err);
             assert.equal(res.statusCode, 200);
             assert(body);
@@ -1199,7 +1217,6 @@ describe('Controllers', () => {
             });
         });
     });
-
 
     describe('maintenance mode', () => {
         before((done) => {
