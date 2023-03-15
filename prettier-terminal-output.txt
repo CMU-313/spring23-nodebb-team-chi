@@ -1,0 +1,25 @@
+(base) jimdembp:spring23-nodebb-team-chi jimchen$ npx prettier --check ./src/topics/
+Checking formatting...
+[warn] src/topics/bookmarks.js
+[warn] src/topics/create.js
+[warn] src/topics/data.js
+[warn] src/topics/delete.js
+[warn] src/topics/events.js
+[warn] src/topics/follow.js
+[warn] src/topics/fork.js
+[warn] src/topics/index.js
+[warn] src/topics/merge.js
+[warn] src/topics/posts.js
+[warn] src/topics/recent.js
+[warn] src/topics/resolved.js
+[warn] src/topics/resolved.ts
+[warn] src/topics/scheduled.js
+[warn] src/topics/sorted.js
+[warn] src/topics/suggested.js
+[warn] src/topics/tags.js
+[warn] src/topics/teaser.js
+[warn] src/topics/thumbs.js
+[warn] src/topics/tools.js
+[warn] src/topics/unread.js
+[warn] src/topics/user.js
+[warn] Code style issues found in 22 files. Forgot to run Prettier?
