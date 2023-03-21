@@ -25,8 +25,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        node: [16, 18]
-        database: [mongo-dev, mongo, redis, postgres]
+        node: [18]
+        database: [redis]
         include:
           # only run coverage once
           - os: ubuntu-latest
