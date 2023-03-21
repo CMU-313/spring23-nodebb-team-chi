@@ -14,9 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      # - run:
-      #     echo "${{ secrets.CONFIG }}" >> config.ini; cat config.ini
       - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: echo "${{ secrets.CONFIG }}" >> config.ini; cat config.ini
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
