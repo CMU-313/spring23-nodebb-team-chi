@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: 
+      - run: |
           echo "$CONFIG" >> config.ini
           cat config.ini
       - run: flyctl deploy --remote-only
