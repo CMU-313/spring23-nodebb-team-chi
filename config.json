@@ -1,0 +1,12 @@
+{
+    "url": "http://nodebb-team-chi.fly.dev",
+    "secret": "${{ secrets.CONFIG_SECRET }}",
+    "database": "redis",
+    "port": "4567",
+    "redis": {
+        "host": "${{ secrets.CONFIG_HOST }}",
+        "port": "6379",
+        "password": "${{ secrets.CONFIG_PASSWORD }}",
+        "database": "0"
+    }
+}
