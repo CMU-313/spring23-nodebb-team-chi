@@ -78,9 +78,6 @@ jobs:
             }
         run: |
           node app --setup="${SETUP}" --ci="${CI}"
-      - name: Install Prettier Plugin for ESLint
-        run: npm install --save-dev eslint-plugin-prettier
-      - name: Configure ESLint to accomodate Prettier
-        run: npm install --save-dev eslint-config-prettier
+
       - name: Run ESLint
         run: npm run lint

@@ -1,6 +1,6 @@
 name: Prettier Format Check
 on:
-  pull_request:
+  push:
     branches:
       - main
 jobs:
