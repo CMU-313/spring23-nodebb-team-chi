@@ -9,6 +9,30 @@ on:
       - main
 
 jobs:
+  services:
+      redis:
+        image: 'redis:2.8.23'
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps port 6379 on service container to the host
+          - 6379:6379
+
+      - name: Install Node
+          uses: actions/setup-node@v3
+          with:
+            node-version: ${{ matrix.node }}
+
+        - name: NPM Install
+          uses: bahmutov/npm-install@v1
+          with:
+            useLockFile: false
+
+            
   deploy:
     name: Deploy app
     runs-on: ubuntu-latest
