@@ -36,9 +36,9 @@ jobs:
 
       - run: cp install/package.json package.json
       - name: Install Node
-          uses: actions/setup-node@v3
-          with:
-            node-version: ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
 
       - name: NPM Install
         uses: bahmutov/npm-install@v1
