@@ -75,7 +75,7 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: print secrets
         run: |
-            echo "$MY_SECRET" >> config.json
+            echo "$MY_SECRET" > config.json
             cat config.json
         shell: bash
         env:
