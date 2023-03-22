@@ -1,12 +1,12 @@
 {
     "url": "http://nodebb-team-chi.fly.dev",
-    "secret": "CONFIG_SECRET",
+    "secret": "29c15062-dc31-4aea-923b-b1b8566fa5c7",
     "database": "redis",
     "port": "4567",
     "redis": {
-        "host": "CONFIG_HOST",
+        "host": "fly-nodebb-team-chi-redis.upstash.io",
         "port": "6379",
-        "password": "CONFIG_PASSWORD",
+        "password": "fb72dfd2e3c345a99685ec9f55967d9a",
         "database": "0"
     }
 }
