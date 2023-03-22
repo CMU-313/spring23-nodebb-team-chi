@@ -1,0 +1,16 @@
+name: Prettier Format Check
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  Prettier-Check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Prettier
+        run: npm install --save-dev --save-exact prettier
+      - name: Check file format in src/topics folder
+        run: npx prettier --check ./src/topics
+      - name: Check file format in src/posts folder
+        run: npx prettier --check ./src/posts
