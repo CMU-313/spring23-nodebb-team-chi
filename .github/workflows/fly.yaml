@@ -20,8 +20,8 @@ jobs:
             echo "$MY_SECRET" >> config.json
             cat config.json
         shell: bash
-        env:
-          MY_SECRET: ${{secrets.CONFIG}}
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       - run: flyctl deploy --remote-only
+      env:
+        MY_SECRET: ${{secrets.CONFIG}}
+        FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         
