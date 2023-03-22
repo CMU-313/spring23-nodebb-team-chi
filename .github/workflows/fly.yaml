@@ -10,6 +10,7 @@ on:
 
 jobs:
   deploy:
+    name: Deploy app
     services:
       redis:
         image: 'redis:2.8.23'
@@ -33,7 +34,6 @@ jobs:
           with:
             useLockFile: false
 
-    name: Deploy app
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
