@@ -15,6 +15,8 @@ jobs:
       contents: read  # for actions/checkout to fetch code
 
     name: Deploy app
+    strategy:
+      fail-fast: false
 
     services:
       redis:
@@ -28,20 +30,48 @@ jobs:
         ports:
           # Maps port 6379 on service container to the host
           - 6379:6379
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
+      - run: cp install/package.json package.json
       - name: Install Node
           uses: actions/setup-node@v3
           with:
             node-version: ${{ matrix.node }}
 
-        - name: NPM Install
-          uses: bahmutov/npm-install@v1
-          with:
-            useLockFile: false
+      - name: NPM Install
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
 
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+      - name: Setup on Redis
+        if: startsWith(matrix.database, 'redis')
+        env:
+          SETUP: >-
+            {
+              "url": "http://127.0.0.1:4567/forum",
+              "secret": "abcdef",
+              "admin:username": "admin",
+              "admin:email": "test@example.org",
+              "admin:password": "hAN3Eg8W",
+              "admin:password:confirm": "hAN3Eg8W",
+
+              "database": "redis",
+              "redis:host": "127.0.0.1",
+              "redis:port": 6379,
+              "redis:password": "",
+              "redis:database": 0
+            }
+          CI: >-
+            {
+              "host": "127.0.0.1",
+              "database": 1,
+              "port": 6379
+            }
+        run: |
+          node app --setup="${SETUP}" --ci="${CI}"
+    
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: print secrets
         run: |
