@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-const posts = require("../../posts");
-const privileges = require("../../privileges");
+const posts = require('../../posts');
+const privileges = require('../../privileges');
 
-const api = require("../../api");
-const helpers = require("../helpers");
-const apiHelpers = require("../../api/helpers");
+const api = require('../../api');
+const helpers = require('../helpers');
+const apiHelpers = require('../../api/helpers');
 
 const Posts = module.exports;
 
@@ -16,11 +16,7 @@ Posts.markAsAnswer = async (req, res) => {
 };
 
 Posts.get = async (req, res) => {
-    helpers.formatApiResponse(
-        200,
-        res,
-        await api.posts.get(req, { pid: req.params.pid })
-    );
+    helpers.formatApiResponse(200, res, await api.posts.get(req, { pid: req.params.pid }));
 };
 
 Posts.edit = async (req, res) => {
@@ -58,7 +54,7 @@ Posts.move = async (req, res) => {
 };
 
 async function mock(req) {
-    const tid = await posts.getPostField(req.params.pid, "tid");
+    const tid = await posts.getPostField(req.params.pid, 'tid');
     return { pid: req.params.pid, room_id: `topic_${tid}` };
 }
 
@@ -94,32 +90,20 @@ Posts.unbookmark = async (req, res) => {
 };
 
 Posts.getDiffs = async (req, res) => {
-    helpers.formatApiResponse(
-        200,
-        res,
-        await api.posts.getDiffs(req, { ...req.params })
-    );
+    helpers.formatApiResponse(200, res, await api.posts.getDiffs(req, { ...req.params }));
 };
 
 Posts.loadDiff = async (req, res) => {
-    helpers.formatApiResponse(
-        200,
-        res,
-        await api.posts.loadDiff(req, { ...req.params })
-    );
+    helpers.formatApiResponse(200, res, await api.posts.loadDiff(req, { ...req.params }));
 };
 
 Posts.restoreDiff = async (req, res) => {
-    helpers.formatApiResponse(
-        200,
-        res,
-        await api.posts.restoreDiff(req, { ...req.params })
-    );
+    helpers.formatApiResponse(200, res, await api.posts.restoreDiff(req, { ...req.params }));
 };
 
 Posts.deleteDiff = async (req, res) => {
     if (!parseInt(req.params.pid, 10)) {
-        throw new Error("[[error:invalid-data]]");
+        throw new Error('[[error:invalid-data]]');
     }
 
     const cid = await posts.getCidByPid(req.params.pid);
@@ -129,18 +113,10 @@ Posts.deleteDiff = async (req, res) => {
     ]);
 
     if (!(isAdmin || isModerator)) {
-        return helpers.formatApiResponse(
-            403,
-            res,
-            new Error("[[error:no-privileges]]")
-        );
+        return helpers.formatApiResponse(403, res, new Error('[[error:no-privileges]]'));
     }
 
     await posts.diffs.delete(req.params.pid, req.params.timestamp, req.uid);
 
-    helpers.formatApiResponse(
-        200,
-        res,
-        await api.posts.getDiffs(req, { ...req.params })
-    );
+    helpers.formatApiResponse(200, res, await api.posts.getDiffs(req, { ...req.params }));
 };

@@ -1,10 +1,9 @@
-import { CategoryObject } from "./category";
-import { TagObject } from "./tag";
-import { UserObjectSlim } from "./user";
+import { CategoryObject } from './category';
+import { TagObject } from './tag';
+import { UserObjectSlim } from './user';
 
-export type TopicObject = TopicObjectSlim &
-  TopicObjectCoreProperties &
-  TopicObjectOptionalProperties;
+export type TopicObject =
+    TopicObjectSlim & TopicObjectCoreProperties & TopicObjectOptionalProperties;
 
 export type TopicObjectCoreProperties = {
   lastposttime: number;

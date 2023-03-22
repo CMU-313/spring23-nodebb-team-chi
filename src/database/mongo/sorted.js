@@ -1,77 +1,37 @@
-"use strict";
+'use strict';
 
-const _ = require("lodash");
-const utils = require("../../utils");
+const _ = require('lodash');
+const utils = require('../../utils');
 
 module.exports = function (module) {
-    const helpers = require("./helpers");
-    const dbHelpers = require("../helpers");
+    const helpers = require('./helpers');
+    const dbHelpers = require('../helpers');
 
-    const util = require("util");
+    const util = require('util');
     const sleep = util.promisify(setTimeout);
 
-    require("./sorted/add")(module);
-    require("./sorted/remove")(module);
-    require("./sorted/union")(module);
-    require("./sorted/intersect")(module);
+    require('./sorted/add')(module);
+    require('./sorted/remove')(module);
+    require('./sorted/union')(module);
+    require('./sorted/intersect')(module);
 
     module.getSortedSetRange = async function (key, start, stop) {
-        return await getSortedSetRange(
-            key,
-            start,
-            stop,
-            "-inf",
-            "+inf",
-            1,
-            false
-        );
+        return await getSortedSetRange(key, start, stop, '-inf', '+inf', 1, false);
     };
 
     module.getSortedSetRevRange = async function (key, start, stop) {
-        return await getSortedSetRange(
-            key,
-            start,
-            stop,
-            "-inf",
-            "+inf",
-            -1,
-            false
-        );
+        return await getSortedSetRange(key, start, stop, '-inf', '+inf', -1, false);
     };
 
     module.getSortedSetRangeWithScores = async function (key, start, stop) {
-        return await getSortedSetRange(
-            key,
-            start,
-            stop,
-            "-inf",
-            "+inf",
-            1,
-            true
-        );
+        return await getSortedSetRange(key, start, stop, '-inf', '+inf', 1, true);
     };
 
     module.getSortedSetRevRangeWithScores = async function (key, start, stop) {
-        return await getSortedSetRange(
-            key,
-            start,
-            stop,
-            "-inf",
-            "+inf",
-            -1,
-            true
-        );
+        return await getSortedSetRange(key, start, stop, '-inf', '+inf', -1, true);
     };
 
-    async function getSortedSetRange(
-        key,
-        start,
-        stop,
-        min,
-        max,
-        sort,
-        withScores
-    ) {
+    async function getSortedSetRange(key, start, stop, min, max, sort, withScores) {
         if (!key) {
             return;
         }
@@ -88,10 +48,10 @@ module.exports = function (module) {
             }
         }
 
-        if (min !== "-inf") {
+        if (min !== '-inf') {
             query.score = { $gte: min };
         }
-        if (max !== "+inf") {
+        if (max !== '+inf') {
             query.score = query.score || {};
             query.score.$lte = max;
         }
@@ -124,9 +84,7 @@ module.exports = function (module) {
 
         let result = [];
         async function doQuery(_key, fields, skip, limit) {
-            return await module.client
-                .collection("objects")
-                .find({ ...query, ...{ _key: _key } }, { projection: fields })
+            return await module.client.collection('objects').find({ ...query, ...{ _key: _key } }, { projection: fields })
                 .sort({ score: sort })
                 .skip(skip)
                 .limit(limit)
@@ -135,26 +93,15 @@ module.exports = function (module) {
 
         if (isArray && key.length > 100) {
             const batches = [];
-            const batch = require("../../batch");
-            const batchSize = Math.ceil(
-                key.length / Math.ceil(key.length / 100)
-            );
-            await batch.processArray(
-                key,
-                async (currentBatch) => batches.push(currentBatch),
-                { batch: batchSize }
-            );
-            const batchData = await Promise.all(
-                batches.map((batch) =>
-                    doQuery({ $in: batch }, { _id: 0, _key: 0 }, 0, stop + 1)
-                )
-            );
+            const batch = require('../../batch');
+            const batchSize = Math.ceil(key.length / Math.ceil(key.length / 100));
+            await batch.processArray(key, async currentBatch => batches.push(currentBatch), { batch: batchSize });
+            const batchData = await Promise.all(batches.map(
+                batch => doQuery({ $in: batch }, { _id: 0, _key: 0 }, 0, stop + 1)
+            ));
             result = dbHelpers.mergeBatch(batchData, 0, stop, sort);
             if (start > 0) {
-                result = result.slice(
-                    start,
-                    stop !== -1 ? stop + 1 : undefined
-                );
+                result = result.slice(start, stop !== -1 ? stop + 1 : undefined);
             }
         } else {
             result = await doQuery(query._key, fields, start, limit);
@@ -164,106 +111,34 @@ module.exports = function (module) {
             result.reverse();
         }
         if (!withScores) {
-            result = result.map((item) => item.value);
+            result = result.map(item => item.value);
         }
 
         return result;
     }
 
-    module.getSortedSetRangeByScore = async function (
-        key,
-        start,
-        count,
-        min,
-        max
-    ) {
-        return await getSortedSetRangeByScore(
-            key,
-            start,
-            count,
-            min,
-            max,
-            1,
-            false
-        );
+    module.getSortedSetRangeByScore = async function (key, start, count, min, max) {
+        return await getSortedSetRangeByScore(key, start, count, min, max, 1, false);
     };
 
-    module.getSortedSetRevRangeByScore = async function (
-        key,
-        start,
-        count,
-        max,
-        min
-    ) {
-        return await getSortedSetRangeByScore(
-            key,
-            start,
-            count,
-            min,
-            max,
-            -1,
-            false
-        );
+    module.getSortedSetRevRangeByScore = async function (key, start, count, max, min) {
+        return await getSortedSetRangeByScore(key, start, count, min, max, -1, false);
     };
 
-    module.getSortedSetRangeByScoreWithScores = async function (
-        key,
-        start,
-        count,
-        min,
-        max
-    ) {
-        return await getSortedSetRangeByScore(
-            key,
-            start,
-            count,
-            min,
-            max,
-            1,
-            true
-        );
+    module.getSortedSetRangeByScoreWithScores = async function (key, start, count, min, max) {
+        return await getSortedSetRangeByScore(key, start, count, min, max, 1, true);
     };
 
-    module.getSortedSetRevRangeByScoreWithScores = async function (
-        key,
-        start,
-        count,
-        max,
-        min
-    ) {
-        return await getSortedSetRangeByScore(
-            key,
-            start,
-            count,
-            min,
-            max,
-            -1,
-            true
-        );
+    module.getSortedSetRevRangeByScoreWithScores = async function (key, start, count, max, min) {
+        return await getSortedSetRangeByScore(key, start, count, min, max, -1, true);
     };
 
-    async function getSortedSetRangeByScore(
-        key,
-        start,
-        count,
-        min,
-        max,
-        sort,
-        withScores
-    ) {
+    async function getSortedSetRangeByScore(key, start, count, min, max, sort, withScores) {
         if (parseInt(count, 10) === 0) {
             return [];
         }
-        const stop = parseInt(count, 10) === -1 ? -1 : start + count - 1;
-        return await getSortedSetRange(
-            key,
-            start,
-            stop,
-            min,
-            max,
-            sort,
-            withScores
-        );
+        const stop = (parseInt(count, 10) === -1) ? -1 : (start + count - 1);
+        return await getSortedSetRange(key, start, stop, min, max, sort, withScores);
     }
 
     module.sortedSetCount = async function (key, min, max) {
@@ -272,17 +147,15 @@ module.exports = function (module) {
         }
 
         const query = { _key: key };
-        if (min !== "-inf") {
+        if (min !== '-inf') {
             query.score = { $gte: min };
         }
-        if (max !== "+inf") {
+        if (max !== '+inf') {
             query.score = query.score || {};
             query.score.$lte = max;
         }
 
-        const count = await module.client
-            .collection("objects")
-            .countDocuments(query);
+        const count = await module.client.collection('objects').countDocuments(query);
         return count || 0;
     };
 
@@ -290,9 +163,7 @@ module.exports = function (module) {
         if (!key) {
             return 0;
         }
-        const count = await module.client
-            .collection("objects")
-            .countDocuments({ _key: key });
+        const count = await module.client.collection('objects').countDocuments({ _key: key });
         return parseInt(count, 10) || 0;
     };
 
@@ -300,7 +171,7 @@ module.exports = function (module) {
         if (!Array.isArray(keys) || !keys.length) {
             return [];
         }
-        const promises = keys.map((k) => module.sortedSetCard(k));
+        const promises = keys.map(k => module.sortedSetCard(k));
         return await Promise.all(promises);
     };
 
@@ -309,9 +180,7 @@ module.exports = function (module) {
             return 0;
         }
 
-        const count = await module.client.collection("objects").countDocuments({
-            _key: Array.isArray(keys) ? { $in: keys } : keys,
-        });
+        const count = await module.client.collection('objects').countDocuments({ _key: Array.isArray(keys) ? { $in: keys } : keys });
         return parseInt(count, 10) || 0;
     };
 
@@ -333,7 +202,7 @@ module.exports = function (module) {
             return null;
         }
 
-        return await module.client.collection("objects").countDocuments({
+        return await module.client.collection('objects').countDocuments({
             $or: [
                 {
                     _key: key,
@@ -364,7 +233,7 @@ module.exports = function (module) {
         for (let i = 0; i < values.length; i += 1) {
             data[i] = { key: keys[i], value: values[i] };
         }
-        const promises = data.map((item) => method(item.key, item.value));
+        const promises = data.map(item => method(item.key, item.value));
         return await Promise.all(promises);
     }
 
@@ -380,9 +249,7 @@ module.exports = function (module) {
         if (values.length === 1) {
             return [await getSortedSetRank(reverse, key, values[0])];
         }
-        const sortedSet = await module[
-            reverse ? "getSortedSetRevRange" : "getSortedSetRange"
-        ](key, 0, -1);
+        const sortedSet = await module[reverse ? 'getSortedSetRevRange' : 'getSortedSetRange'](key, 0, -1);
         return values.map((value) => {
             if (!value) {
                 return null;
@@ -397,12 +264,7 @@ module.exports = function (module) {
             return null;
         }
         value = helpers.valueToString(value);
-        const result = await module.client
-            .collection("objects")
-            .findOne(
-                { _key: key, value: value },
-                { projection: { _id: 0, _key: 0, value: 0 } }
-            );
+        const result = await module.client.collection('objects').findOne({ _key: key, value: value }, { projection: { _id: 0, _key: 0, value: 0 } });
         return result ? result.score : null;
     };
 
@@ -411,13 +273,7 @@ module.exports = function (module) {
             return [];
         }
         value = helpers.valueToString(value);
-        const result = await module.client
-            .collection("objects")
-            .find(
-                { _key: { $in: keys }, value: value },
-                { projection: { _id: 0, value: 0 } }
-            )
-            .toArray();
+        const result = await module.client.collection('objects').find({ _key: { $in: keys }, value: value }, { projection: { _id: 0, value: 0 } }).toArray();
         const map = {};
         result.forEach((item) => {
             if (item) {
@@ -425,7 +281,7 @@ module.exports = function (module) {
             }
         });
 
-        return keys.map((key) => (map[key] ? map[key].score : null));
+        return keys.map(key => (map[key] ? map[key].score : null));
     };
 
     module.sortedSetScores = async function (key, values) {
@@ -436,13 +292,7 @@ module.exports = function (module) {
             return [];
         }
         values = values.map(helpers.valueToString);
-        const result = await module.client
-            .collection("objects")
-            .find(
-                { _key: key, value: { $in: values } },
-                { projection: { _id: 0, _key: 0 } }
-            )
-            .toArray();
+        const result = await module.client.collection('objects').find({ _key: key, value: { $in: values } }, { projection: { _id: 0, _key: 0 } }).toArray();
 
         const valueToScore = {};
         result.forEach((item) => {
@@ -451,9 +301,7 @@ module.exports = function (module) {
             }
         });
 
-        return values.map((v) =>
-            utils.isNumber(valueToScore[v]) ? valueToScore[v] : null
-        );
+        return values.map(v => (utils.isNumber(valueToScore[v]) ? valueToScore[v] : null));
     };
 
     module.isSortedSetMember = async function (key, value) {
@@ -461,15 +309,11 @@ module.exports = function (module) {
             return;
         }
         value = helpers.valueToString(value);
-        const result = await module.client.collection("objects").findOne(
-            {
-                _key: key,
-                value: value,
-            },
-            {
-                projection: { _id: 0, value: 1 },
-            }
-        );
+        const result = await module.client.collection('objects').findOne({
+            _key: key, value: value,
+        }, {
+            projection: { _id: 0, value: 1 },
+        });
         return !!result;
     };
 
@@ -481,18 +325,11 @@ module.exports = function (module) {
             return [];
         }
         values = values.map(helpers.valueToString);
-        const results = await module.client
-            .collection("objects")
-            .find(
-                {
-                    _key: key,
-                    value: { $in: values },
-                },
-                {
-                    projection: { _id: 0, value: 1 },
-                }
-            )
-            .toArray();
+        const results = await module.client.collection('objects').find({
+            _key: key, value: { $in: values },
+        }, {
+            projection: { _id: 0, value: 1 },
+        }).toArray();
 
         const isMember = {};
         results.forEach((item) => {
@@ -501,7 +338,7 @@ module.exports = function (module) {
             }
         });
 
-        return values.map((value) => !!isMember[value]);
+        return values.map(value => !!isMember[value]);
     };
 
     module.isMemberOfSortedSets = async function (keys, value) {
@@ -509,18 +346,11 @@ module.exports = function (module) {
             return [];
         }
         value = helpers.valueToString(value);
-        const results = await module.client
-            .collection("objects")
-            .find(
-                {
-                    _key: { $in: keys },
-                    value: value,
-                },
-                {
-                    projection: { _id: 0, _key: 1, value: 1 },
-                }
-            )
-            .toArray();
+        const results = await module.client.collection('objects').find({
+            _key: { $in: keys }, value: value,
+        }, {
+            projection: { _id: 0, _key: 1, value: 1 },
+        }).toArray();
 
         const isMember = {};
         results.forEach((item) => {
@@ -529,7 +359,7 @@ module.exports = function (module) {
             }
         });
 
-        return keys.map((key) => !!isMember[key]);
+        return keys.map(key => !!isMember[key]);
     };
 
     module.getSortedSetMembers = async function (key) {
@@ -546,18 +376,12 @@ module.exports = function (module) {
         if (arrayOfKeys) {
             projection._key = 1;
         }
-        const data = await module.client
-            .collection("objects")
-            .find(
-                {
-                    _key: arrayOfKeys ? { $in: keys } : keys[0],
-                },
-                { projection: projection }
-            )
-            .toArray();
+        const data = await module.client.collection('objects').find({
+            _key: arrayOfKeys ? { $in: keys } : keys[0],
+        }, { projection: projection }).toArray();
 
         if (!arrayOfKeys) {
-            return [data.map((item) => item.value)];
+            return [data.map(item => item.value)];
         }
         const sets = {};
         data.forEach((item) => {
@@ -565,7 +389,7 @@ module.exports = function (module) {
             sets[item._key].push(item.value);
         });
 
-        return keys.map((k) => sets[k] || []);
+        return keys.map(k => sets[k] || []);
     };
 
     module.sortedSetIncrBy = async function (key, increment, value) {
@@ -577,28 +401,22 @@ module.exports = function (module) {
         data.score = parseFloat(increment);
 
         try {
-            const result = await module.client
-                .collection("objects")
-                .findOneAndUpdate(
-                    {
-                        _key: key,
-                        value: value,
-                    },
-                    {
-                        $inc: data,
-                    },
-                    {
-                        returnDocument: "after",
-                        upsert: true,
-                    }
-                );
+            const result = await module.client.collection('objects').findOneAndUpdate({
+                _key: key,
+                value: value,
+            }, {
+                $inc: data,
+            }, {
+                returnDocument: 'after',
+                upsert: true,
+            });
             return result && result.value ? result.value.score : null;
         } catch (err) {
             // if there is duplicate key error retry the upsert
             // https://github.com/NodeBB/NodeBB/issues/4467
             // https://jira.mongodb.org/browse/SERVER-14322
             // https://docs.mongodb.org/manual/reference/command/findAndModify/#upsert-and-unique-index
-            if (err && err.message.startsWith("E11000 duplicate key error")) {
+            if (err && err.message.startsWith('E11000 duplicate key error')) {
                 return await module.sortedSetIncrBy(key, increment, value);
             }
             throw err;
@@ -606,52 +424,32 @@ module.exports = function (module) {
     };
 
     module.sortedSetIncrByBulk = async function (data) {
-        const bulk = module.client
-            .collection("objects")
-            .initializeUnorderedBulkOp();
+        const bulk = module.client.collection('objects').initializeUnorderedBulkOp();
         data.forEach((item) => {
             bulk.find({ _key: item[0], value: helpers.valueToString(item[2]) })
                 .upsert()
                 .update({ $inc: { score: parseFloat(item[1]) } });
         });
         await bulk.execute();
-        const result = await module.client
-            .collection("objects")
-            .find(
-                {
-                    _key: { $in: _.uniq(data.map((i) => i[0])) },
-                    value: { $in: _.uniq(data.map((i) => i[2])) },
-                },
-                {
-                    projection: { _id: 0, _key: 1, value: 1, score: 1 },
-                }
-            )
-            .toArray();
+        const result = await module.client.collection('objects').find({
+            _key: { $in: _.uniq(data.map(i => i[0])) },
+            value: { $in: _.uniq(data.map(i => i[2])) },
+        }, {
+            projection: { _id: 0, _key: 1, value: 1, score: 1 },
+        }).toArray();
 
         const map = {};
         result.forEach((item) => {
             map[`${item._key}:${item.value}`] = item.score;
         });
-        return data.map((item) => map[`${item[0]}:${item[2]}`]);
+        return data.map(item => map[`${item[0]}:${item[2]}`]);
     };
 
-    module.getSortedSetRangeByLex = async function (
-        key,
-        min,
-        max,
-        start,
-        count
-    ) {
+    module.getSortedSetRangeByLex = async function (key, min, max, start, count) {
         return await sortedSetLex(key, min, max, 1, start, count);
     };
 
-    module.getSortedSetRevRangeByLex = async function (
-        key,
-        max,
-        min,
-        start,
-        count
-    ) {
+    module.getSortedSetRevRangeByLex = async function (key, max, min, start, count) {
         return await sortedSetLex(key, min, max, -1, start, count);
     };
 
@@ -666,26 +464,24 @@ module.exports = function (module) {
         count = count !== undefined ? count : 0;
         buildLexQuery(query, min, max);
 
-        const data = await module.client
-            .collection("objects")
-            .find(query, { projection: { _id: 0, value: 1 } })
+        const data = await module.client.collection('objects').find(query, { projection: { _id: 0, value: 1 } })
             .sort({ value: sort })
             .skip(start)
             .limit(count === -1 ? 0 : count)
             .toArray();
 
-        return data.map((item) => item && item.value);
+        return data.map(item => item && item.value);
     }
 
     module.sortedSetRemoveRangeByLex = async function (key, min, max) {
         const query = { _key: key };
         buildLexQuery(query, min, max);
 
-        await module.client.collection("objects").deleteMany(query);
+        await module.client.collection('objects').deleteMany(query);
     };
 
     function buildLexQuery(query, min, max) {
-        if (min !== "-") {
+        if (min !== '-') {
             if (min.match(/^\(/)) {
                 query.value = { $gt: min.slice(1) };
             } else if (min.match(/^\[/)) {
@@ -694,7 +490,7 @@ module.exports = function (module) {
                 query.value = { $gte: min };
             }
         }
-        if (max !== "+") {
+        if (max !== '+') {
             query.value = query.value || {};
             if (max.match(/^\(/)) {
                 query.value.$lt = max.slice(1);
@@ -720,13 +516,9 @@ module.exports = function (module) {
             return [];
         }
 
-        const cursor = module.client.collection("objects").find(
-            {
-                _key: params.key,
-                value: { $regex: regex },
-            },
-            { projection: project }
-        );
+        const cursor = module.client.collection('objects').find({
+            _key: params.key, value: { $regex: regex },
+        }, { projection: project });
 
         if (params.limit) {
             cursor.limit(params.limit);
@@ -734,7 +526,7 @@ module.exports = function (module) {
 
         const data = await cursor.toArray();
         if (!params.withScores) {
-            return data.map((d) => d.value);
+            return data.map(d => d.value);
         }
         return data;
     };
@@ -747,17 +539,11 @@ module.exports = function (module) {
         if (!options.withScores) {
             project.score = 0;
         }
-        const cursor = await module.client
-            .collection("objects")
-            .find({ _key: setKey }, { projection: project })
+        const cursor = await module.client.collection('objects').find({ _key: setKey }, { projection: project })
             .sort({ score: 1 })
             .batchSize(options.batch);
 
-        if (
-            processFn &&
-            processFn.constructor &&
-            processFn.constructor.name !== "AsyncFunction"
-        ) {
+        if (processFn && processFn.constructor && processFn.constructor.name !== 'AsyncFunction') {
             processFn = util.promisify(processFn);
         }
 
