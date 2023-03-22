@@ -42,12 +42,14 @@ function find_compiled_js() {
     }
     
     module.exports = {
-        extends: ["nodebb"],
+        extends: ["nodebb", "prettier"],
         root: true,
         ignorePatterns: find_compiled_js(),
         rules: {
-            "indent": ["error", 4]
+            "indent": ["error", 4],
+            "prettier/prettier": "error",
         },
+        plugins: ["prettier"],
         overrides: [
             {
                 files: ["**/*.ts", "**/*.tsx"],
