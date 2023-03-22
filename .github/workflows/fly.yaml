@@ -10,10 +10,12 @@ on:
 
 jobs:
   deploy:
-    name: Deploy app
     permissions:
       checks: write  # for coverallsapp/github-action to create new checks
       contents: read  # for actions/checkout to fetch code
+
+    name: Deploy app
+    
     services:
       redis:
         image: 'redis:2.8.23'
