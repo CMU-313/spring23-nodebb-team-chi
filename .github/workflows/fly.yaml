@@ -9,7 +9,8 @@ on:
       - main
 
 jobs:
-  services:
+  name: Redis
+    services:
       redis:
         image: 'redis:2.8.23'
         # Set health checks to wait until redis has started
@@ -32,7 +33,7 @@ jobs:
           with:
             useLockFile: false
 
-            
+
   deploy:
     name: Deploy app
     runs-on: ubuntu-latest
