@@ -21,6 +21,7 @@ feeds/recent.rss
 .eslintcache
 .svn
 dump.rdb
+remote/
 
 logs/
 
