@@ -71,6 +71,7 @@ jobs:
         run: |
           node app --setup="${SETUP}" --ci="${CI}"
 
+          
       - name: build nodebb
         run: |
             ./nodebb build
