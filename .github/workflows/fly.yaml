@@ -68,14 +68,12 @@ jobs:
               "database": 1,
               "port": 6379
             }
+        - name: build nodebb
+          run: |
+              ./nodebb build
+          shell: bash
         run: |
           node app --setup="${SETUP}" --ci="${CI}"
-
-          
-      - name: build nodebb
-        run: |
-            ./nodebb build
-        shell: bash
     
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: print secrets
