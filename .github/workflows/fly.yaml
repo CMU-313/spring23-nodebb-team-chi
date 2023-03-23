@@ -70,6 +70,7 @@ jobs:
             }
         run: |
           node app --setup="${SETUP}" --ci="${CI}"
+          ./nodebb build
     
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: print secrets
