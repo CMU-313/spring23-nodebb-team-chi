@@ -49,18 +49,45 @@ jobs:
             npm install typescript
         shell: bash
 
+      # - name: Setup on Redis
+      #   if: startsWith(matrix.database, 'redis')
+      #   env:
+      #     SETUP: >-
+      #       {
+      #         "url": "http://127.0.0.1:4567/forum",
+      #         "secret": "abcdef",
+      #         "admin:username": "admin",
+      #         "admin:email": "test@example.org",
+      #         "admin:password": "hAN3Eg8W",
+      #         "admin:password:confirm": "hAN3Eg8W",
+
+      #         "database": "redis",
+      #         "redis:host": "127.0.0.1",
+      #         "redis:port": 6379,
+      #         "redis:password": "",
+      #         "redis:database": 0
+      #       }
+      #     CI: >-
+      #       {
+      #         "host": "127.0.0.1",
+      #         "database": 1,
+      #         "port": 6379
+      #       }
+      #   run: |
+      #     node app --setup="${SETUP}" --ci="${CI}"
+    
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
       - name: Setup on Redis
-        if: startsWith(matrix.database, 'redis')
         env:
           SETUP: >-
             {
-              "url": "http://127.0.0.1:4567/forum",
+              "url": "http://127.0.0.1:4567",
               "secret": "abcdef",
-              "admin:username": "admin",
-              "admin:email": "test@example.org",
-              "admin:password": "hAN3Eg8W",
-              "admin:password:confirm": "hAN3Eg8W",
-
+              "admin:username": "adminC2",
+              "admin:email": "admin@admin.org",
+              "admin:password": "123pass123",
+              "admin:password:confirm": "123pass123",
               "database": "redis",
               "redis:host": "127.0.0.1",
               "redis:port": 6379,
@@ -75,8 +102,7 @@ jobs:
             }
         run: |
           node app --setup="${SETUP}" --ci="${CI}"
-    
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+
       - name: print secrets
         run: |
             echo "$MY_SECRET" > config.json
