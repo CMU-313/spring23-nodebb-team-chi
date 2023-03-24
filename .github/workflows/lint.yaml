@@ -78,6 +78,7 @@ jobs:
             }
         run: |
           node app --setup="${SETUP}" --ci="${CI}"
-
+      - name: Install Prettier Config
+        run: npm install --save-dev eslint-config-prettier
       - name: Run ESLint
         run: npm run lint
