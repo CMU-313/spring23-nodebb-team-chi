@@ -44,6 +44,11 @@ jobs:
         with:
           useLockFile: false
 
+      - name: install typescript
+        run: |
+            npm install typescript
+        shell: bash
+
       - name: Setup on Redis
         if: startsWith(matrix.database, 'redis')
         env:
@@ -70,14 +75,6 @@ jobs:
             }
         run: |
           node app --setup="${SETUP}" --ci="${CI}"
-      - name: install typescript
-        run: |
-            npm install typescript
-        shell: bash
-      - name: build nodebb
-        run: |
-            ./nodebb build
-        shell: bash
     
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: print secrets
