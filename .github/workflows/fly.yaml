@@ -70,6 +70,14 @@ jobs:
             }
         run: |
           node app --setup="${SETUP}" --ci="${CI}"
+      - name: install typescript
+          run: |
+              npm install typescript
+          shell: bash
+      - name: build nodebb
+          run: |
+              ./nodebb build
+          shell: bash
     
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: print secrets
