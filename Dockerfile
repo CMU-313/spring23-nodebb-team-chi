@@ -25,4 +25,4 @@ EXPOSE 4567
 # CMD test -n "${SETUP}" && ./nodebb setup || node ./nodebb start
 # CMD node ./nodebb build; node ./nodebb start
 
-CMD test -n "${SETUP}" && ./nodebb setup; node ./nodebb build; node ./nodebb start
+CMD test -n "${SETUP}" && ./nodebb setup; npm install typescript; node ./nodebb build; node ./nodebb start
