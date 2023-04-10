@@ -5,6 +5,9 @@ This folder contains an ML model for predicting whether a student applicant woul
 
 This model should eventually be connected with the career page within NodeBB to allow recruiters to view a prediction of a student applicant's likeliness to be a good employee to hire.
 
+## Deployment
+This model is deployed to a [separate repository](https://github.com/JimChen2002/s23-docker-recitation) and the API can be accessed at the predict endpoint: https://red-haze-9902.fly.dev/predict.
+
 ## Setup
 1. (Optional) Set up a [virtual environment](https://docs.python.org/3/library/venv.html) for Python
 2. Run `pip install -r requirements.txt` to install all dependencies
@@ -47,4 +50,5 @@ The `predict` function takes in a student info dictionary that contains the foll
 ## Function Outputs
 The `predict` function returns a prediction result dictionary containing the following:
 
-- `good_employee`: int, 1 if the student is predicted to be a good employee, 0 otherwise
+- `good_employee`: numpy.int64, 1 if the student is predicted to be a good employee, 0 otherwise. 
+    - **Dev Note:** If needed, this value is castable to an int via `.item()`

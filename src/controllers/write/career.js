@@ -1,5 +1,6 @@
 'use strict';
 
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const helpers = require('../helpers');
 const user = require('../../user');
 const db = require('../../database');
@@ -20,7 +21,16 @@ Career.register = async (req, res) => {
             num_past_internships: userData.num_past_internships,
         };
 
-        userCareerData.prediction = Math.round(Math.random()); // TODO: Somehow call model ???
+        var response = await fetch('https://red-haze-9902.fly.dev/predict', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userCareerData)
+        });
+        response = await response.json();
+        userCareerData.prediction = response["good_employee"];
 
         await user.setCareerData(req.uid, userCareerData);
         db.sortedSetAdd('users:career', req.uid, req.uid);
