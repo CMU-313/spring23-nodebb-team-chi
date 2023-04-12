@@ -8,7 +8,6 @@ const db = require('../../database');
 const Career = module.exports;
 
 Career.register = async (req, res) => {
-    console.log("register!");
     const userData = req.body;
     try {
         const userCareerData = {
@@ -22,7 +21,7 @@ Career.register = async (req, res) => {
             num_past_internships: userData.num_past_internships,
         };
 
-        var response = await fetch('https://red-haze-9902.fly.dev/predict', {
+        let response = await fetch('https://red-haze-9902.fly.dev/predict', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
