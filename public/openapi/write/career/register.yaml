@@ -1,0 +1,68 @@
+post:
+  tags:
+    - career
+  summary: register the career information
+  description: This operation registers the career information of a user
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            student_id:
+              type: string
+              example: student1
+            major:
+              type: string
+              example: Computer Science
+            age:
+              type: number
+              example: 20
+            gender:
+              type: string
+              example: M
+            gpa:
+              type: number
+              example: 4.0
+            extra_curricular:
+              type: string
+              example: Men's Basketball
+            num_programming_languages:
+              type: number
+              example: 1
+            num_past_internships:
+              type: number
+              example: 2
+          required:
+            - student_id
+            - major
+            - age
+            - gender
+            - gpa
+            - extra_curricular
+            - num_programming_languages
+            - num_past_internships
+  responses:
+    '200':
+      description: Career information successfully registered
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: ../../components/schemas/Status.yaml#/Status
+              response:
+                type: object
+                properties: {}
+    '400':
+      $ref: ../../components/responses/400.yaml#/400
+    '401':
+      $ref: ../../components/responses/401.yaml#/401
+    '403':
+      $ref: ../../components/responses/403.yaml#/403
+    '426':
+      $ref: ../../components/responses/426.yaml#/426
+    '500':
+      $ref: ../../components/responses/500.yaml#/500

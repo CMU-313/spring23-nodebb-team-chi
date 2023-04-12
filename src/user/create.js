@@ -13,6 +13,7 @@ const analytics = require('../analytics');
 
 module.exports = function (User) {
     User.create = async function (data) {
+        data.accounttype = data['account-type'];
         data.username = data.username.trim();
         data.userslug = slugify(data.username);
         if (data.email !== undefined) {
