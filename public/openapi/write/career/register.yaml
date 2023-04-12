@@ -51,8 +51,6 @@ post:
           schema:
             type: object
             properties:
-              status:
-                $ref: ../../components/schemas/Status.yaml#/Status
               response:
                 type: object
                 properties: {}

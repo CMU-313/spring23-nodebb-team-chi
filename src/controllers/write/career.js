@@ -1,6 +1,6 @@
 'use strict';
 
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const fetch = require('node-fetch');
 const helpers = require('../helpers');
 const user = require('../../user');
 const db = require('../../database');
@@ -8,6 +8,7 @@ const db = require('../../database');
 const Career = module.exports;
 
 Career.register = async (req, res) => {
+    console.log("register!");
     const userData = req.body;
     try {
         const userCareerData = {
@@ -30,7 +31,7 @@ Career.register = async (req, res) => {
             body: JSON.stringify(userCareerData)
         });
         response = await response.json();
-        userCareerData.prediction = response["good_employee"];
+        userCareerData.prediction = response.good_employee;
 
         await user.setCareerData(req.uid, userCareerData);
         db.sortedSetAdd('users:career', req.uid, req.uid);

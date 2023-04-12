@@ -339,7 +339,7 @@ module.exports = function (utils, Benchpress, relative_path) {
         return '<span ' + attributes.join(' ') + ' style="' + styles.join(' ') + '">' + userObj['icon:text'] + '</span>';
     }
     function getPredictionColor(prediction) {
-        if (prediction == 1) 
+        if (prediction === 1) 
             return `"background-color: rgb(0, 255, 0);"`
         return `"background-color: rgb(255, 0, 0);"`
     }
