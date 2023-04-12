@@ -34,7 +34,7 @@ Career.register = async (req, res) => {
 
         await user.setCareerData(req.uid, userCareerData);
         db.sortedSetAdd('users:career', req.uid, req.uid);
-        res.json({});
+        helpers.formatApiResponse(200, res);
     } catch (err) {
         console.log(err);
         helpers.noScriptErrors(req, res, err.message, 400);

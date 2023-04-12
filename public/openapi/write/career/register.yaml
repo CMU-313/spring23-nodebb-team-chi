@@ -45,12 +45,14 @@ post:
             - num_past_internships
   responses:
     '200':
-      description: successfully registered
+      description: Career information successfully registered
       content:
         application/json:
           schema:
             type: object
             properties:
+              status:
+                $ref: ../../components/schemas/Status.yaml#/Status
               response:
                 type: object
                 properties: {}
